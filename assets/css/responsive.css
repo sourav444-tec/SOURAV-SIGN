@@ -1,0 +1,291 @@
+/* =====================================================================
+   Sourav's Stamp – responsive.css
+   Desktop-first: rules below only change what must change on smaller screens.
+   Must be loaded LAST (after style.css and components.css).
+   ===================================================================== */
+
+/* ---------------------------------------------------------------------
+   Large screens
+   --------------------------------------------------------------------- */
+@media (min-width: 1400px) {
+    :root { --container: 1280px; }
+}
+
+/* ---------------------------------------------------------------------
+   Laptops / landscape tablets (up to 1100px)
+   --------------------------------------------------------------------- */
+@media (max-width: 1100px) {
+    .navbar { gap: 1.25rem; }
+    .navbar-links { gap: 1.5rem; }
+    .navbar-search { width: 200px; }
+
+    /* Homepage catalog panel: intro on top, five cards below */
+    .catalog-panel { grid-template-columns: 1fr; gap: 1.5rem; }
+    .catalog-panel-intro { align-self: start; }
+
+    /* Homepage contact row: two cards, then the gallery full width */
+    .home-contact-grid { grid-template-columns: 1fr 1fr; }
+    .store-gallery { grid-column: 1 / -1; }
+
+    .catalog-layout { grid-template-columns: 200px minmax(0, 1fr); gap: 1.5rem; }
+    .product-layout { gap: 2rem; }
+    .cart-layout { grid-template-columns: minmax(0, 1fr) 300px; gap: 1.5rem; }
+    .checkout-layout { grid-template-columns: minmax(0, 1fr) 320px; gap: 1.5rem; }
+}
+
+/* ---------------------------------------------------------------------
+   Tablets (up to 960px): hamburger menu + single-column layouts
+   --------------------------------------------------------------------- */
+@media (max-width: 960px) {
+    :root { --section-pad: 3rem; }
+
+    /* ---- Navigation ----
+       Without JavaScript the menu simply stays open under the brand.
+       With JavaScript (class "js" on <html>) it collapses behind the hamburger button
+       and main.js toggles .is-open on #navbar-menu. */
+    .navbar { flex-wrap: wrap; gap: .75rem; padding-block: .6rem; }
+    .navbar-brand { margin-right: auto; }
+    .js .navbar-toggle { display: flex; }
+
+    .navbar-menu {
+        flex: 1 1 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        max-height: calc(100vh - 5.5rem);
+        max-height: calc(100dvh - 5.5rem);
+        padding: 1rem 0 .5rem;
+        overflow-y: auto;
+        border-top: 1px solid var(--color-border);
+    }
+    .js .navbar-menu { display: none; }
+    .js .navbar-menu.is-open { display: flex; }
+
+    .navbar-links { flex-direction: column; gap: 0; margin: 0; }
+    .nav-link {
+        display: block;
+        padding: .85rem .25rem;
+        border-bottom: 1px solid var(--gold-a14);
+    }
+    .nav-link::after { display: none; }
+    .nav-link.active {
+        padding-left: .9rem;
+        box-shadow: inset 3px 0 0 var(--color-gold);
+        color: var(--color-gold-light);
+    }
+    .navbar-search { width: 100%; }
+    .navbar-cart { align-self: flex-start; }
+
+    /* ---- Homepage ---- */
+    .feature-strip-list { grid-template-columns: repeat(2, 1fr); }
+    .feature-item + .feature-item { border-left: 0; }
+    .feature-item:nth-child(even) { border-left: 1px solid var(--color-border); }
+    .feature-item:nth-child(n + 3) { border-top: 1px solid var(--color-border); }
+
+    .category-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .about-intro,
+    .about-split { grid-template-columns: 1fr; gap: 2rem; }
+
+    /* ---- Product grids ---- */
+    .product-grid,
+    .catalog-main .product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    /* ---- Catalog: sidebar becomes a scrollable row of pill links ---- */
+    .catalog-layout { grid-template-columns: 1fr; }
+    .catalog-sidebar { position: static; }
+    .category-filter {
+        display: flex;
+        gap: .5rem;
+        padding: .75rem;
+        overflow-x: auto;
+        scrollbar-width: thin;
+    }
+    .category-filter li { flex-shrink: 0; }
+    .category-filter-link,
+    .category-filter li:last-child .category-filter-link {
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-pill);
+        padding: .5rem 1rem;
+        white-space: nowrap;
+    }
+    .category-filter-link.active { box-shadow: none; border-color: var(--color-gold); }
+    .sidebar-title { border-bottom: 0; }
+
+    /* ---- Other two-column pages become one column ---- */
+    .product-layout,
+    .cart-layout,
+    .checkout-layout,
+    .contact-layout,
+    .location-layout { grid-template-columns: 1fr; }
+    .cart-summary { position: static; }
+    .map-embed,
+    .map-placeholder { min-height: 320px; }
+
+    .value-grid,
+    .steps-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .store-photo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ---------------------------------------------------------------------
+   Large phones / small tablets (up to 768px)
+   --------------------------------------------------------------------- */
+@media (max-width: 768px) {
+    :root { --section-pad: 2.75rem; }
+
+    .page-banner { padding: 2.25rem 0 2rem; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+
+    /* Hero: stronger overlay so text stays readable over the photo */
+    .hero {
+        min-height: 0;
+        background-image:
+            linear-gradient(180deg, rgba(10, 10, 10, .85), rgba(10, 10, 10, .7)),
+            var(--hero-image, none),
+            radial-gradient(ellipse at 70% 40%, rgba(var(--gold-rgb), .22), transparent 60%);
+    }
+    .hero-inner { padding: 2.5rem var(--gutter); }
+    .hero-script { display: none; }
+    .hero-tags { font-size: .66rem; }
+
+    /* Footer stacks and centres */
+    .footer-inner { flex-direction: column; text-align: center; }
+    .footer-brand { justify-content: center; }
+    .footer-links { gap: .5rem 1.25rem; }
+    .footer-links a { padding: 0; }
+    .footer-links a + a { border-left: 0; }
+    .footer-meta { align-items: center; }
+
+    .home-contact-grid { grid-template-columns: 1fr; }
+    .store-gallery-body { grid-template-columns: 1fr; }
+    .store-gallery-thumbs { flex-direction: row; }
+    .store-gallery-thumbs li { flex: 1; }
+
+    .product-grid,
+    .catalog-main .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+
+    /* ---- Cart rows turn into small cards ---- */
+    .cart-list-head { display: none; }
+    .cart-list { border-top: 1px solid var(--color-border); border-radius: var(--radius-sm); }
+    .cart-item {
+        grid-template-columns: 72px minmax(0, 1fr) 40px;
+        grid-template-areas:
+            "image info   remove"
+            "price price  price"
+            "qty   qty    qty"
+            "total total  total";
+        gap: .75rem 1rem;
+    }
+    .cart-item-image { grid-area: image; }
+    .cart-item-info { grid-area: info; }
+    .cart-item-remove { grid-area: remove; align-self: start; }
+    .cart-item-price { grid-area: price; }
+    .cart-item-qty { grid-area: qty; }
+    .cart-item-subtotal { grid-area: total; }
+    .cart-item-price,
+    .cart-item-qty,
+    .cart-item-subtotal {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: .65rem;
+        border-top: 1px dashed var(--gold-a22);
+    }
+    /* The data-label text (Price / Quantity / Subtotal) is shown in front of each value */
+    .cart-item [data-label]::before {
+        content: attr(data-label);
+        font-size: .75rem;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        color: var(--color-text-muted);
+    }
+}
+
+/* ---------------------------------------------------------------------
+   Phones (up to 576px)
+   --------------------------------------------------------------------- */
+@media (max-width: 576px) {
+    :root { --gutter: 1rem; --section-pad: 2.5rem; }
+
+    .navbar-logo { width: 44px; }
+    .brand-name { font-size: 1.3rem; }
+    .brand-sub { font-size: .66rem; letter-spacing: .2em; }
+    .brand-tagline { font-size: .5rem; }
+
+    .hero-title-main { font-size: clamp(2.8rem, 15vw, 4rem); }
+    .hero .btn { width: 100%; }
+
+    /* Feature strip: 2 x 2 with the icon above the text */
+    .feature-item { flex-direction: column; gap: .5rem; padding: 1.1rem .75rem; text-align: center; }
+    .feature-icon .icon { width: 2.2rem; height: 2.2rem; }
+
+    .catalog-panel { padding: 1.25rem; }
+    .category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+    /* An odd last card is centred instead of leaving a hole */
+    .category-grid li:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+        justify-self: center;
+        width: calc(50% - .375rem);
+    }
+    .about-intro-list { padding: 1.25rem; }
+
+    /* Product page: thumbnails move below the big image */
+    .product-gallery { grid-template-columns: 1fr; }
+    .product-gallery-main { order: 1; }
+    .product-gallery-thumbs { order: 2; flex-direction: row; overflow-x: auto; padding-bottom: .25rem; }
+    .product-gallery-thumbs li { flex: 0 0 72px; }
+    .purchase-box { flex-direction: column; align-items: stretch; }
+    .purchase-row { align-items: flex-start; }
+    .product-add-btn { width: 100%; min-width: 0; }
+
+    .catalog-toolbar { flex-direction: column; align-items: stretch; }
+    .sort-form { width: 100%; }
+    .sort-form .form-control { flex: 1; }
+
+    .form-row { grid-template-columns: 1fr; }
+    .checkout-card,
+    .contact-form-card,
+    .contact-details,
+    .location-info { padding: 1.25rem; }
+
+    .contact-method { gap: .85rem; }
+    .contact-card-icon { width: 46px; height: 46px; }
+    .contact-card { padding: 1.25rem; }
+    .location-block { gap: .85rem; }
+
+    .value-grid,
+    .steps-grid { grid-template-columns: 1fr; }
+    .story-item { gap: .9rem; }
+    .story-item-body { padding: 1rem; }
+
+    .success-card { padding: 1.75rem 1.1rem; }
+    .success-actions .btn,
+    .cta-actions .btn { width: 100%; }
+    .cta-panel { padding: 2rem 1.1rem; }
+
+    .map-embed,
+    .map-placeholder { min-height: 280px; }
+    .map-actions .btn { width: 100%; }
+}
+
+/* ---------------------------------------------------------------------
+   Very small phones (up to 359px)
+   --------------------------------------------------------------------- */
+@media (max-width: 359px) {
+    .product-grid,
+    .catalog-main .product-grid { grid-template-columns: 1fr; }
+    .brand-name { font-size: 1.15rem; }
+    .brand-sub { letter-spacing: .14em; }
+}
+
+/* ---------------------------------------------------------------------
+   Touch screens: larger tap targets (any width)
+   --------------------------------------------------------------------- */
+@media (pointer: coarse) {
+    .qty-btn { width: 46px; min-height: 46px; }
+    .qty-input { width: 60px; }
+    .cart-item-remove { width: 44px; height: 44px; }
+    .category-filter-link { min-height: 44px; display: flex; align-items: center; }
+    .tab-btn { min-height: 44px; }
+    .social-link { width: 40px; height: 40px; }
+    .gallery-arrow { width: 42px; height: 42px; margin-top: -21px; }
+}

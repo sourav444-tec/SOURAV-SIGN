@@ -1,0 +1,77 @@
+# =====================================================================
+# Sourav's Stamp - .gitignore
+# =====================================================================
+
+# --- Secrets & local configuration ----------------------------------
+.env
+.env.*
+!.env.example
+config/config.local.php
+config/database.local.php
+config/*.local.php
+!config/*.local.example.php
+*.pem
+*.key
+
+# --- Logs (keep the folder, ignore its contents) --------------------
+logs/*
+!logs/.gitkeep
+*.log
+
+# --- Temporary & cache files ----------------------------------------
+tmp/
+cache/
+*.tmp
+*.temp
+
+# --- Dependencies & production build output -------------------------
+node_modules/
+vendor/
+dist/
+build/
+
+# --- User-generated uploads (keep the folders, ignore files) --------
+uploads/products/*
+!uploads/products/.gitkeep
+uploads/gallery/*
+!uploads/gallery/.gitkeep
+
+# --- Backups & dumps -------------------------------------------------
+*.bak
+*.backup
+*.old
+*.orig
+*.save
+*.swp
+*.swo
+*~
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+*.sql.gz
+# Ignore stray SQL files outside /database ...
+*.sql
+# ... but track our schema files:
+!database/*.sql
+# ... and never track dumps/backups even inside /database:
+database/*backup*.sql
+database/*dump*.sql
+database/*.local.sql
+database/*-data-*.sql
+
+# --- IDE & editor files ---------------------------------------------
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+
+# --- Operating system files -----------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+
+# NOTE: PHP/CSS/JS sources, README.md and .htaccess are NOT ignored.

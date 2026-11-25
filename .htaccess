@@ -1,0 +1,104 @@
+# =====================================================================
+# Sourav's Stamp - root .htaccess (Apache 2.4 / XAMPP)
+# Each section lists the Apache module or permission it needs.
+# =====================================================================
+
+DirectoryIndex index.php index.html
+
+# ---------------------------------------------------------------------
+# 1. Disable directory listing
+#    Needs: AllowOverride Options (or All). On hosts that forbid this,
+#    it causes a 500 error -> remove this line and disable listing in
+#    the hosting control panel ("Indexes" / "Directory Privacy").
+# ---------------------------------------------------------------------
+Options -Indexes
+
+# ---------------------------------------------------------------------
+# 2. Block sensitive paths (Needs: mod_rewrite + AllowOverride FileInfo)
+#    NC = case-insensitive. REQUIRED on Windows/XAMPP because /CONFIG/
+#    reaches the same folder as /config/.
+# ---------------------------------------------------------------------
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Hidden files/folders: .git, .env, .htaccess, .gitignore, .gitkeep ...
+    # (".well-known" stays reachable for SSL certificate validation.)
+    RewriteRule (^|/)\.(?!well-known/) - [F,L]
+
+    # Internal directories. They are only ever loaded by PHP via include/require.
+    RewriteRule ^(config|database|includes|logs|tmp|cache|vendor|node_modules|dist|build)(/|$) - [F,L,NC]
+
+    # Never execute scripts inside uploads (also catches shell.php.jpg).
+    RewriteRule ^uploads/.*\.(php|phtml|phar|pht|phps|php[0-9]+|cgi|pl|py|sh|asp|aspx|jsp|exe)(\.|/|$) - [F,L,NC]
+
+    # Backup, dump, log, config and editor files anywhere.
+    RewriteRule \.(sql|bak|backup|old|orig|save|swp|swo|tmp|log|ini|sh|yml|yaml|dist|lock|inc|md)$ - [F,L,NC]
+    RewriteRule ~$ - [F,L]
+    RewriteRule ^(composer|package)(-lock)?\.json$ - [F,L,NC]
+</IfModule>
+
+# ---------------------------------------------------------------------
+# 3. Fallback if mod_rewrite is unavailable (Needs: AllowOverride Limit/All)
+# ---------------------------------------------------------------------
+<IfModule mod_authz_core.c>
+    <FilesMatch "(?i)(^\.|\.(sql|bak|backup|old|orig|save|swp|swo|tmp|log|ini|sh|yml|yaml|dist|lock|inc|md|phps)$|~$|^(composer|package)(-lock)?\.json$)">
+        Require all denied
+    </FilesMatch>
+</IfModule>
+<IfModule !mod_authz_core.c>
+    <FilesMatch "(?i)(^\.|\.(sql|bak|backup|old|orig|save|swp|swo|tmp|log|ini|sh|yml|yaml|dist|lock|inc|md|phps)$|~$|^(composer|package)(-lock)?\.json$)">
+        Order allow,deny
+        Deny from all
+    </FilesMatch>
+</IfModule>
+
+# ---------------------------------------------------------------------
+# 4. Security headers (Needs: mod_headers)
+#    The same headers are also sent by PHP (send_security_headers()).
+# ---------------------------------------------------------------------
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "geolocation=(), camera=(), microphone=()"
+    Header unset X-Powered-By
+
+    # PRODUCTION + HTTPS ONLY: uncomment after HTTPS works on every page.
+    # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+</IfModule>
+
+# ---------------------------------------------------------------------
+# 5. Optional: force HTTPS on production (Needs: mod_rewrite)
+#    Leave commented out for local XAMPP.
+# ---------------------------------------------------------------------
+# <IfModule mod_rewrite.c>
+#     RewriteCond %{HTTPS} !=on
+#     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# </IfModule>
+
+# ---------------------------------------------------------------------
+# 6. Simple error responses (no server details, no missing-file errors)
+# ---------------------------------------------------------------------
+ErrorDocument 403 "403 - Access denied."
+ErrorDocument 404 "404 - Page not found."
+ErrorDocument 500 "500 - Something went wrong. Please try again later."
+
+# ---------------------------------------------------------------------
+# 7. Performance (Needs: mod_deflate / mod_expires; safe to skip)
+#    CSS/JS URLs carry ?v=<filemtime>, so long caching is safe.
+# ---------------------------------------------------------------------
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css application/javascript text/javascript image/svg+xml application/json
+</IfModule>
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>
