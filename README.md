@@ -1,3 +1,4 @@
+HEAD
 # Sourav's Stamp
 
 Website for **Sourav Sign Stamp Store**: custom stamps, rubber stamps, name plates, sign boards and accessories. Visitors will browse a catalog and place orders; the owner will manage everything from an admin panel.
@@ -137,3 +138,6 @@ If you ever commit a secret by accident, change the password immediately. Removi
 - [ ] **Phase 6:** testing, production optimization, deployment
 
 Phases 2 to 6 are planned only; nothing in them is implemented yet.
+
+# SOURAV-SIGN
+ 9db8eadc6a6b02eff1fb75e764d3dc217f8110ac
