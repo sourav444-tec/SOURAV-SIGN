@@ -39,7 +39,7 @@ defined('APP_NAME')       || define('APP_NAME', "Sourav's Stamp");
 defined('STORE_NAME')     || define('STORE_NAME', 'Sourav Sign Stamp Store');
 defined('STORE_TAGLINE')  || define('STORE_TAGLINE', 'Your Sign • Our Quality');
 // URL path of the project. XAMPP: '/souravs-stamp'. Production at domain root: ''.
-defined('BASE_URL')       || define('BASE_URL', '/souravs-stamp');
+defined('BASE_URL') || define('BASE_URL', '/SOURAV-SIGN');
 defined('SESSION_NAME')   || define('SESSION_NAME', 'SSSESSID');
 defined('ADMIN_IDLE_TIMEOUT') || define('ADMIN_IDLE_TIMEOUT', 1800); // seconds (30 min)
 
@@ -120,3 +120,4 @@ if (session_status() === PHP_SESSION_NONE) {
 require_once CONFIG_PATH . '/database.php';
 require_once INCLUDES_PATH . '/auth.php';
 require_once INCLUDES_PATH . '/cart-functions.php';
+
